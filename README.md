@@ -12,7 +12,6 @@ Order crud generator example :
 
 ```
 php artisan crud:generator Order
-
 ```
 
 Will generate : 
