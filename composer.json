@@ -1,6 +1,6 @@
 {
-    "name": "toufichalwani/crudgenerator",
-    "description": "Crud generator with admin interface",
+    "name": "thalwani/crudgenerator",
+    "description": "Crud generator for laravel admin",
     "authors": [
         {
             "name": "Toufic Halwani",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Toufichalwani\CrudGenerator;
+namespace Thalwani\CrudGenerator;
 
 use Illuminate\Support\ServiceProvider;
 

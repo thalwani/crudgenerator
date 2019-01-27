@@ -1,6 +1,6 @@
 <?php
 
-namespace Toufichalwani\CrudGenerator;
+namespace Thalwani\CrudGenerator;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
