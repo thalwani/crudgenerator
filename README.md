@@ -4,7 +4,7 @@ Generate crud for laravel admin dashboard.
 
 ## Getting Started
 
-Add composer package thalwani/crudgenerator
+composer require thalwani/crudgenerator
 
 ### Prerequisites
 
