@@ -7,6 +7,11 @@
             "email": "toufic.halwani@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Thalwani\\CrudGenerator\\": "src"
+        }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
