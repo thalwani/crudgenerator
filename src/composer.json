@@ -1,0 +1,12 @@
+{
+    "name": "toufichalwani/crudgenerator",
+    "description": "Crud generator with admin interface",
+    "authors": [
+        {
+            "name": "Toufic Halwani",
+            "email": "toufic.halwani@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

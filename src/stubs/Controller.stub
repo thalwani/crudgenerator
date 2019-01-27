@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\{{modelName}}Request;
+use App\{{modelName}};
+
+class {{modelName}}Controller extends Controller
+{
+    public function index()
+    {
+        ${{modelNamePluralLowerCase}} = {{modelName}}::paginate(10);
+
+        return view('templates.{{modelNamePluralLowerCase}}.list', compact('{{modelNamePluralLowerCase}}'));
+    }
+
+    public function create()
+    {
+    	return view('templates.{{modelNamePluralLowerCase}}.create');
+    }
+
+  	public function store({{modelName}}Request $request)
+      {
+      	$inputs = $request->all();
+      	${{modelNameSingularLowerCase}} = new {{modelName}}($inputs);
+      	${{modelNameSingularLowerCase}}->save();
+      	return redirect('/{{modelNamePluralLowerCase}}')->with('success', '{{modelName}} has been added');
+      }
+
+      public function edit($id)
+  	{
+  		${{modelNameSingularLowerCase}} = {{modelName}}::find($id);
+
+  		return view('templates.{{modelNamePluralLowerCase}}.edit', compact('{{modelNameSingularLowerCase}}'));
+  	}
+
+  	public function update({{modelName}}Request $request, $id)
+    {	
+      ${{modelNameSingularLowerCase}} = {{modelName}}::find($id);
+
+  		$inputs = $request->all();
+    	${{modelNameSingularLowerCase}}->update($inputs);
+      
+    	return redirect('/{{modelNamePluralLowerCase}}')->with('success', '{{modelName}} has been updated');
+    }
+}

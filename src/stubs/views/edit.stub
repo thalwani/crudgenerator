@@ -1,0 +1,32 @@
+@extends('adminlte::layouts.app')
+
+@section('htmlheader_title')
+  Edit a {{modelNameSingularLowerCase}}
+@endsection
+
+@section('contentheader_title')
+  Edit a {{modelNameSingularLowerCase}}
+@endsection
+
+@section('main-content')
+    <div class="box box-solid">
+      <div class="panel-body">
+        <form method="post" action="{{ route('{{modelNamePluralLowerCase}}.update', ${{modelNameSingularLowerCase}}->id) }}" enctype="multipart/form-data">
+          @method('PATCH')
+          @csrf
+          <div class="row">
+            <div class="col-md-12">
+{{fields}}
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary pull-right">Edit</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <a href="javascript:history.back()" class="btn btn-primary">
+      <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
+    </a>
+@endsection
