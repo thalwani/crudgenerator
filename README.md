@@ -19,7 +19,7 @@ Will generate :
 * Controller
 * Model
 * Request
-* liste.blade.php
+* list.blade.php
 * create.blade.php
 * edit.blade.php
 
