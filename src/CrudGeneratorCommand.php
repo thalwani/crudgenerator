@@ -9,7 +9,7 @@ use DB;
 class CrudGeneratorCommand extends Command
 {
     protected $signature = 'crud:generator
-        {name : Class (singular) for example User}';
+        {name : Class (singular) for example User} {--adminlte}';
 
     protected $description = 'Create CRUD operations';
 
@@ -29,13 +29,14 @@ class CrudGeneratorCommand extends Command
     public function handle()
     {
         $name = $this->argument('name');
+        $adminlte = $this->option('adminlte');
 
         $this->controller($name);
         $this->model($name);
         $this->request($name);
-        $this->list($name);
-        $this->create($name);
-        $this->edit($name);
+        $this->list($name, $adminlte);
+        $this->create($name, $adminlte);
+        $this->edit($name, $adminlte);
 
         File::append(base_path('routes/web.php'), 'Route::resource(\'' . str_plural(strtolower($name)) . "', '{$name}Controller');");
     }
@@ -84,9 +85,10 @@ class CrudGeneratorCommand extends Command
         file_put_contents(app_path("/Http/Requests/{$name}Request.php"), $requestTemplate);
     }
 
-    protected function list($name)
+    protected function list($name, $adminlte = false)
     {
         $columns = $this->getColumns(str_plural($name));
+        $stubPath = $adminlte ? 'views/adminlte/list' : 'views/monsteradmin/list';
 
         $i = 0;
         $head = '';
@@ -115,7 +117,7 @@ class CrudGeneratorCommand extends Command
                 $head,
                 $body
             ],
-            $this->getStub('views/list')
+            $this->getStub($stubPath)
         );
 
         if(!file_exists($path = resource_path('views/templates/' . str_plural(strtolower($name)))))
@@ -124,17 +126,20 @@ class CrudGeneratorCommand extends Command
         file_put_contents(resource_path('views/templates/' . str_plural(strtolower($name))) . '/list.blade.php', $listTemplate);
     }
 
-    protected function create($name)
+    protected function create($name, $adminlte = false)
     {
         $columns = $this->getColumns(str_plural($name));
+        $stubPath = $adminlte ? 'views/adminlte/create' : 'views/monsteradmin/create';
 
         $i = 0;
         $fields = '';
         foreach ($columns as $key => $type) {
             $eol = ($i == count($columns) - 1) ? '' : PHP_EOL;
-            $fields .= '                <div class="form-group">
-                  <label for="name">' . $key . '</label>
-                  ' . $this->getInput($key, $type) . ' 
+            $fields .= '                <div class="form-group row">
+                  <label for="' . $key . '" class="col-2 col-form-label">' . $key . '</label>
+                  <div class="col-10">
+                    ' . $this->getInput($key, $type) . ' 
+                  </div>
                 </div>' . $eol;
             $i ++;
         }
@@ -154,7 +159,7 @@ class CrudGeneratorCommand extends Command
                 strtolower($name),
                 $fields
             ],
-            $this->getStub('views/create')
+            $this->getStub($stubPath)
         );
 
         if(!file_exists($path = resource_path('views/templates/' . str_plural(strtolower($name)))))
@@ -163,17 +168,20 @@ class CrudGeneratorCommand extends Command
         file_put_contents(resource_path('views/templates/' . str_plural(strtolower($name))) . '/create.blade.php', $listTemplate);
     }
 
-    protected function edit($name)
+    protected function edit($name, $adminlte = false)
     {
         $columns = $this->getColumns(str_plural($name));
+        $stubPath = $adminlte ? 'views/adminlte/edit' : 'views/monsteradmin/edit';
 
         $i = 0;
         $fields = '';
         foreach ($columns as $key => $type) {
             $eol = ($i == count($columns) - 1) ? '' : PHP_EOL;
-            $fields .= '                <div class="form-group">
-                  <label for="name">' . $key . '</label>
+            $fields .= '                <div class="form-group row">
+                  <label for="' . $key . '" class="col-2 col-form-label">' . $key . '</label>
+                  <div class="col-10">
                   ' . $this->getInput($key, $type, '{{ $' . strtolower($name) . '->' . $key . ' }}') . '
+                  </div>
                 </div>' . $eol;
             $i ++;
         }
@@ -193,7 +201,7 @@ class CrudGeneratorCommand extends Command
                 strtolower($name),
                 $fields
             ],
-            $this->getStub('views/edit')
+            $this->getStub($stubPath)
         );
 
         if(!file_exists($path = resource_path('views/templates/' . str_plural(strtolower($name)))))
@@ -264,11 +272,11 @@ class CrudGeneratorCommand extends Command
     protected function getInput($key, $type, $value = '') {
         switch ($type) {
             case 'datetime':
-                return '<div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
+                return '<div class="input-group">
+                            <input type="text" class="form-control datepicker" name="' . $key . '" value="' . $value . '" placeholder="dd/mm/yyyy"/>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="icon-calender"></i></span>
                             </div>
-                            <input type="text" class="form-control datepicker" name="' . $key . '" value="' . $value . '"/>
                         </div>';
             break;
 
